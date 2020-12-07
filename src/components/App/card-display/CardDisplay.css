@@ -1,0 +1,13 @@
+.card-container{
+    height: 100%;
+    width: 272px;
+    margin: 0 4px;
+    background-color: #ebecf0;
+    margin-left: 12px;
+    border-radius: 5px;
+}
+
+.card-header{
+    margin-left: 12px;
+    font-weight: bold;
+}
