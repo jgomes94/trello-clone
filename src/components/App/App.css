@@ -14,23 +14,23 @@ body {
 
 .row {
   display: flex;
+  flex-wrap: nowrap;
   flex-direction: row;
-  flex-wrap: wrap;
   width: 100%;
+  max-width: 250px;
+  gap: 40px;
 }
 
-
 .form-column {
-  display: flex;
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
 }
-
 
 .card-column {
   display: flex;
   flex-direction: column;
   flex-basis: 100%;
   flex: 2;
+  width:245px;
 }

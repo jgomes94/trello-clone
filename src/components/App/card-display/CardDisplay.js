@@ -1,18 +1,22 @@
 import './CardDisplay.css';
 
 
-function CreateCard() {
+function CreateCard({title, cardList}) {
     return (
     <div className="card-container">
-        <p className="card-header">Header</p>
-        <div className="card-body">
-            <div className="card-thumbnail">
-                <span>Hi this is my card </span>
-            </div>
-            <div className="card-thumbnail">
-                <span>Hi this is my card </span>
-            </div>
+        <div className="card-header">
+            <span className="card-header">{title}</span>
         </div>
+        {
+            cardList.map((el)=>{
+                return(<div className="card-body">
+                    <div className="card-thumbnail">
+                        <span>{el.title} </span>
+                    </div>
+                </div>)
+            })
+        }
+        
     </div>
     );
 }
