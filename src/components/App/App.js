@@ -5,7 +5,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import CardDisplay from './card-display/CardDisplay';
 
 class App extends React.Component{
-  constructor(props){
+  constructor(props)  {
     super(props);
     this.state = {};
     this.state.columnList =  [{
@@ -40,7 +40,8 @@ class App extends React.Component{
                                   className="characters"
                                   title={el.title} 
                                   cardList={el.cardList}/>
-                          {provided.placeholder}
+                          {provided.placeholder}                          
+                          
                         </div>
                       )}
                       </Droppable> 
@@ -85,13 +86,8 @@ class App extends React.Component{
         return;
       }
     }
-
   }
 
 }
-
-
-
-
 
 export default App;
