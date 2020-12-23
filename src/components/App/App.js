@@ -11,17 +11,17 @@ class App extends React.Component{
     this.state.columnList =  [{
       id: 100,
       title:'TODO',
-      cardList:[{id: 1, order: 1, title:'Do something productive', body:"clean the dishes"}]
+      cardList:[{id: 1, order: 1, title:'View the chapter 3 of the online course', body:"clean the dishes"}]
     },{
       id: 101,
       title:'DOING',
-      cardList:[{id: 2, order: 1, title:'Call the Delivery Company', body:"clean the dishes"}]
+      cardList:[{id: 2, order: 1, title:'Call the Delivery Company about package', body:"clean the dishes"}]
     },{
       id: 102,
       title:'DONE',
-      cardList:[{id: 3, order: 1, title:'Wake Up', body:"clean the dishes"},
-                {id: 4, order: 2, title:'Get Dressed', body:"Make the bed"},
-                {id: 5, order: 3, title:'Make Coffee', body:"Make Coffee"}]
+      cardList:[{id: 3, order: 1, title:'Dinner with Friends', body:"clean the dishes"},
+                {id: 4, order: 2, title:'Cook Food', body:"Make the bed"},
+                {id: 5, order: 3, title:'Order Coffee', body:"Make Coffee"}]
     }];
   }
 
