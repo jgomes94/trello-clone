@@ -5,7 +5,14 @@ import './CardDisplay.css';
 import AddCard from './add-card/AddCard';
 import { Draggable  } from 'react-beautiful-dnd';
 
-class CreateCard extends React.Component {
+class CreateBoard extends React.Component {
+    constructor(props){
+        super();
+        this.state = {};
+        this.state.addCard = props.addCard; 
+        this.state.tableId = props.tableId;
+    }
+
     render() {
         const cardList = this.props.cardList
         return (
@@ -30,10 +37,10 @@ class CreateCard extends React.Component {
                     )
                 })
                 }
-                <AddCard></AddCard>
+                <AddCard tableId={this.state.tableId} addCard={this.state.addCard.bind(this)}></AddCard>
             </div>
         );
     }
 }
 
-export default CreateCard;
+export default CreateBoard;

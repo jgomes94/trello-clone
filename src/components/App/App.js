@@ -39,7 +39,10 @@ class App extends React.Component{
                                   {...provided.placeholder}
                                   className="characters"
                                   title={el.title} 
-                                  cardList={el.cardList}/>
+                                  cardList={el.cardList}
+                                  addCard = {this.addCardToTable.bind(this)}
+                                  tableId = {el.id}
+                                  />
                           {provided.placeholder}                          
                           
                         </div>
