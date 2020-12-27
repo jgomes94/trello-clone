@@ -1,5 +1,8 @@
 import React from 'react';
 
+
+import './CreateCard.css';
+
 import { v4 as uuidv4 } from 'uuid';
 
 class CreateCard extends React.Component {
@@ -15,10 +18,10 @@ class CreateCard extends React.Component {
     render() {
         return (
             <div>
-                <input onChange={evt => this.updateInputValue(evt)}  type="text" id="title" name="title" placeholder="Enter a title for this card" />
+                <input className="input-button" value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)}  type="text" id="title" name="title" placeholder="Enter a title for this card" />
                 <div>
-                    <button onClick={this.createCard.bind(this)}>Add Card </button>
-                    <span onClick={this.closeNewCard}> X </span>
+                    <button className="add-card-success" onClick={this.createCard.bind(this)}>Add Card </button>
+                    <span className="close-add-card-button" onClick={this.closeNewCard}> X </span>
                 </div>
             </div>
         )
@@ -28,6 +31,8 @@ class CreateCard extends React.Component {
         this.state.addCard({id: uuidv4(), order: 1, 
                             title: this.state.inputValue, 
                             body:""}, this.state.tableId, 2);
+
+        this.setState({inputValue: ''});
     }
 
     updateInputValue(evt) {

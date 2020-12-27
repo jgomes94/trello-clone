@@ -14,7 +14,8 @@ class CreateBoard extends React.Component {
     }
 
     render() {
-        const cardList = this.props.cardList
+        const cardList = this.props.cardList;
+        
         return (
             <div className="card-container">
                 <div className="card-header">
