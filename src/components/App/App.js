@@ -1,4 +1,6 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import './App.css';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
@@ -8,24 +10,27 @@ class App extends React.Component{
   constructor(props)  {
     super(props);
     this.state = {};
+    this.state.displayRefresh = false;
+    
     this.state.columnList =  [{
-      id: 100,
+      id: uuidv4(),
       title:'TODO',
-      cardList:[{id: 1, order: 1, title:'View the chapter 3 of the online course', body:"clean the dishes"}]
+      cardList:[{id: uuidv4(), order: 1, title:'View the chapter 3 of the online course', body:"clean the dishes"}]
     },{
-      id: 101,
+      id: uuidv4(),
       title:'DOING',
-      cardList:[{id: 2, order: 1, title:'Call the Delivery Company about package', body:"clean the dishes"}]
+      cardList:[{id: uuidv4(), order: 1, title:'Call the Delivery Company about package', body:"clean the dishes"}]
     },{
-      id: 102,
+      id: uuidv4(),
       title:'DONE',
-      cardList:[{id: 3, order: 1, title:'Dinner with Friends', body:"clean the dishes"},
-                {id: 4, order: 2, title:'Cook Food', body:"Make the bed"},
-                {id: 5, order: 3, title:'Order Coffee', body:"Make Coffee"}]
+      cardList:[{id: uuidv4(), order: 1, title:'Dinner with Friends', body:"clean the dishes"},
+                {id: uuidv4(), order: 2, title:'Cook Food', body:"Make the bed"},
+                {id: uuidv4(), order: 3, title:'Order Coffee', body:"Make Coffee"}]
     }];
   }
 
   render() {
+      console.log('this.state.columnList', this.state.columnList);
       return (
         <div className="App">
           <div className="row">
@@ -42,6 +47,7 @@ class App extends React.Component{
                                   cardList={el.cardList}
                                   addCard = {this.addCardToTable.bind(this)}
                                   tableId = {el.id}
+                                  refresh = {!this.state.displayRefresh}
                                   />
                           {provided.placeholder}                          
                           
@@ -61,12 +67,13 @@ class App extends React.Component{
       this.removeCardById(result.draggableId);
       this.addCardToTable(card, result.destination.droppableId, result.destination.index);
     }
+
   }
   
   findCardById(cardId) {
     for(let column of this.state.columnList){
       for(let card of column.cardList){  
-        if(Number(card.id) ===  Number(cardId)){
+        if('' + card.id ===  ''+ cardId){
           return card;
         }
       }
@@ -78,17 +85,19 @@ class App extends React.Component{
   removeCardById(cardId) {
     for(let column of this.state.columnList) {
       column.cardList = column.cardList.filter((el) => {
-        return Number(el.id) !== Number(cardId)});
+      return  '' + el.id !==  '' + cardId});
     }
   } 
 
   addCardToTable(card, tableId, order) {
     for(let column of this.state.columnList) {
-      if(Number(column.id) === Number(tableId)) {
+      if(column.id === tableId) {
         column.cardList.splice(order, 0, card);
+        this.setState({displayRefresh: !this.state.displayRefresh});
         return;
       }
-    }
+    } 
+    
   }
 
 }

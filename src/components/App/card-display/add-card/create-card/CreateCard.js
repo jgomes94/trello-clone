@@ -1,20 +1,21 @@
 import React from 'react';
 
+import { v4 as uuidv4 } from 'uuid';
+
 class CreateCard extends React.Component {
     constructor(props){
         super();
         this.state = {};
         this.state.addCard=props.addCard;
         this.state.tableId= props.tableId;
-        this.state.id=600;
+        this.state.inputValue = '';
         this.closeNewCard = props.onClose;
-        
     }
 
     render() {
         return (
             <div>
-                <input type="text" id="title" name="title" placeholder="Enter a title for this card" />
+                <input onChange={evt => this.updateInputValue(evt)}  type="text" id="title" name="title" placeholder="Enter a title for this card" />
                 <div>
                     <button onClick={this.createCard.bind(this)}>Add Card </button>
                     <span onClick={this.closeNewCard}> X </span>
@@ -24,13 +25,13 @@ class CreateCard extends React.Component {
     }
 
     createCard () {
-        console.log('this.state.tableId', this.state.tableId);
-        console.log('ORDER', 2);
+        this.state.addCard({id: uuidv4(), order: 1, 
+                            title: this.state.inputValue, 
+                            body:""}, this.state.tableId, 2);
+    }
 
-        this.state.addCard({id: this.state.id, order: 1, title:'Ill sing smth for you', body:""}, this.state.tableId, 2);
-        let id = this.state.id;
-        id++;
-        this.setState({id: id});
+    updateInputValue(evt) {
+        this.setState({inputValue: evt.target.value});
     }
 }
 
