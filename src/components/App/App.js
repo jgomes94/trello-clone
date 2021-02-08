@@ -11,22 +11,7 @@ class App extends React.Component{
     super(props);
     this.state = {};
     this.state.displayRefresh = false;
-    
-    this.state.columnList =  [{
-      id: uuidv4(),
-      title:'TODO',
-      cardList:[{id: uuidv4(), order: 1, title:'View the chapter 3 of the online course', body:"clean the dishes"}]
-    },{
-      id: uuidv4(),
-      title:'DOING',
-      cardList:[{id: uuidv4(), order: 1, title:'Call the Delivery Company about package', body:"clean the dishes"}]
-    },{
-      id: uuidv4(),
-      title:'DONE',
-      cardList:[{id: uuidv4(), order: 1, title:'Dinner with Friends', body:"clean the dishes"},
-                {id: uuidv4(), order: 2, title:'Cook Food', body:"Make the bed"},
-                {id: uuidv4(), order: 3, title:'Order Coffee', body:"Make Coffee"}]
-    }];
+    this.state.columnList = this.getCards();
   }
 
   render() {
@@ -61,13 +46,47 @@ class App extends React.Component{
     )
   }
 
+  getCards(){
+    return [{
+      id: uuidv4(),
+      title:'TODO',
+      cardList:[{id: uuidv4(), order: 1, title:'View the chapter 3 of the online course', body:"clean the dishes"}]
+    },{
+      id: uuidv4(),
+      title:'DOING',
+      cardList:[{id: uuidv4(), order: 1, title:'Call the Delivery Company about package', body:"clean the dishes"}]
+    },{
+      id: uuidv4(),
+      title:'DONE',
+      cardList:[{id: uuidv4(), order: 1, title:'Dinner with Friends', body:"clean the dishes"},
+                {id: uuidv4(), order: 2, title:'Cook Food', body:"Make the bed"},
+                {id: uuidv4(), order: 3, title:'Order Coffee', body:"Make Coffee"}]
+    }];
+  }
+
+  addCardToTable(card, tableId, order) {
+    for(let column of this.state.columnList) {
+      if(column.id === tableId) {
+        column.cardList.splice(order, 0, card);
+        this.setState({displayRefresh: !this.state.displayRefresh});
+        return;
+      }
+    }
+  }
+
   updateCards(result) {
     const card = this.findCardById(result.draggableId);
     if(card && result && result.destination && result.destination.droppableId){
       this.removeCardById(result.draggableId);
       this.addCardToTable(card, result.destination.droppableId, result.destination.index);
     }
+  }
 
+  removeCardById(cardId) {
+    for(let column of this.state.columnList) {
+      column.cardList = column.cardList.filter((el) => {
+      return  '' + el.id !==  '' + cardId});
+    }
   }
   
   findCardById(cardId) {
@@ -78,28 +97,8 @@ class App extends React.Component{
         }
       }
     }
-  
     return null;
   }
-  
-  removeCardById(cardId) {
-    for(let column of this.state.columnList) {
-      column.cardList = column.cardList.filter((el) => {
-      return  '' + el.id !==  '' + cardId});
-    }
-  } 
-
-  addCardToTable(card, tableId, order) {
-    for(let column of this.state.columnList) {
-      if(column.id === tableId) {
-        column.cardList.splice(order, 0, card);
-        this.setState({displayRefresh: !this.state.displayRefresh});
-        return;
-      }
-    } 
-    
-  }
-
 }
 
 export default App;
