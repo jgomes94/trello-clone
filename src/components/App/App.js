@@ -7,7 +7,7 @@ import './App.css';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import CardDisplay from './card-display/CardDisplay';
 
-const API_URL = 'http://127.0.0.1:3000';
+const API_URL = 'http://localhost:3000';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,8 +19,10 @@ class App extends React.Component {
 
   async componentDidMount() {
     try {
-      const cardList = await axios.get(API_URL + '/cards', {"Access-Control-Allow-Headers": "Access-Control-Allow-Headers", 'Access-Control-Allow-Origin': 'http://localhost:3001'});
-      this.setState({ columnList: cardList });
+      const cardList = await axios.get(API_URL + '/cards');
+      let stateCard = this.getCards(cardList.data);
+      console.log('stateCard', stateCard);
+      this.setState({ columnList: stateCard });
     } catch (exception) {
       console.log('exception', exception);
     }
@@ -47,7 +49,6 @@ class App extends React.Component {
                       refresh={!this.state.displayRefresh}
                     />
                     {provided.placeholder}
-
                   </div>
                 )}
               </Droppable>
@@ -58,19 +59,19 @@ class App extends React.Component {
     )
   }
 
-  getCards = () => {
+  getCards = (cardList) => {
     let toReturn = []
 
-    this.state.columnList.forEach((el) => {
+    cardList.forEach((el) => {
       let tableObj = {}
       tableObj = toReturn.filter((filter) => filter.title == el.tableName);
 
-      if (tableObj) {
+      if (tableObj && tableObj.cardList) {
         tableObj.cardList.push(el)
       } else {
         tableObj = {}
         tableObj.id = uuidv4();
-        tableObj.title = el.tableName
+        tableObj.title = el.tablename
         tableObj.cardList = [];
         tableObj.cardList.push(el);
         toReturn.push(tableObj);
@@ -78,7 +79,6 @@ class App extends React.Component {
     });
 
     return toReturn;
-
   }
 
   addCardToTable(card, tableId, order) {
