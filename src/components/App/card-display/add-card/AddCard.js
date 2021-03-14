@@ -9,7 +9,7 @@ class AddCard extends React.Component {
         this.state = {};
         this.state.showNewCardForm = false;
         this.state.addCard= props.addCard;
-        this.state.tableId = props.tableId;
+        this.state.table = props.table;
     }
     
     openCreateCard(){
@@ -24,7 +24,7 @@ class AddCard extends React.Component {
         let toReturn; 
 
         if(this.state.showNewCardForm){
-            toReturn = <CreateCard tableId={this.state.tableId} addCard={this.state.addCard.bind(this)} onClose={this.closeNewCard.bind(this)}/>;
+            toReturn = <CreateCard table={this.state.table} addCard={this.state.addCard.bind(this)} onClose={this.closeNewCard.bind(this)}/>;
         } else {
             toReturn = <div onClick={this.openCreateCard.bind(this)}><span> + </span> <span> Add another card </span></div>;
         }

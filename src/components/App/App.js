@@ -1,11 +1,20 @@
 import React from 'react';
 import axios from 'axios';
+
 import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import CardDisplay from './card-display/CardDisplay';
+
+/*
+  TODO: 
+  fix the methods to use the api endpoints
+  ADD: DELETE BUTTON IN THE CARDS
+  clean up non necessary fields (body, order etc..)
+  ORGANIZE THE SERVICE METHODS IN A SINGLE FILE to be easy to make an exercise
+*/
 
 const API_URL = 'http://localhost:3000';
 
@@ -19,15 +28,12 @@ class App extends React.Component {
 
   async componentDidMount() {
     try {
-      const cardList = await axios.get(API_URL + '/cards');
-      let stateCard = this.getCards(cardList.data);
-      console.log('stateCard', stateCard);
-      this.setState({ columnList: stateCard });
+      const cardList = await this.getCards();
+      this.setState({ columnList: cardList });
     } catch (exception) {
       console.log('exception', exception);
     }
   }
-
 
   render() {
     return (
@@ -45,7 +51,8 @@ class App extends React.Component {
                       title={el.title}
                       cardList={el.cardList}
                       addCard={this.addCardToTable.bind(this)}
-                      tableId={el.id}
+                      table={el}
+                      deleteCard={this.deleteCard.bind(this)}
                       refresh={!this.state.displayRefresh}
                     />
                     {provided.placeholder}
@@ -59,15 +66,15 @@ class App extends React.Component {
     )
   }
 
-  getCards = (cardList) => {
+  getCards = async () => {
+    const cardList = (await axios.get(API_URL + '/cards')).data;
     let toReturn = []
 
     cardList.forEach((el) => {
-      let tableObj = {}
-      tableObj = toReturn.filter((filter) => filter.title == el.tableName);
+      let tableObj = toReturn.filter((filter) => filter.title == el.tablename);
 
-      if (tableObj && tableObj.cardList) {
-        tableObj.cardList.push(el)
+      if (tableObj && tableObj.length > 0) {
+        tableObj[0].cardList.push(el)
       } else {
         tableObj = {}
         tableObj.id = uuidv4();
@@ -81,30 +88,57 @@ class App extends React.Component {
     return toReturn;
   }
 
-  addCardToTable(card, tableId, order) {
+  addCardToTable = async (card, table, order) => {
+    card.tablename = table.title;
+
     for (let column of this.state.columnList) {
-      if (column.id === tableId) {
+      if (column.id === table.id) {
         column.cardList.splice(order, 0, card);
         this.setState({ displayRefresh: !this.state.displayRefresh });
+        break;
+      }
+    }
+
+    let res = await axios.post(API_URL + '/cards', card);
+    card.id = res.id;
+  }
+
+  updateCards = async (result) => {
+    const card = this.findCardById(result.draggableId);
+
+    if (card && result && result.destination && result.destination.droppableId) {
+      this.removeCardFromCardList(card.id);
+      this.setState({ displayRefresh: !this.state.displayRefresh });
+      await this.putCard(card, result.destination.droppableId);
+    }
+  }
+
+  deleteCard = async (cardId) => {
+    console.log('cardId', cardId);
+    //await axios.delete(API_URL + '/cards/' + cardId);
+  }
+
+  putCard = async (card, destinationTableId) => {
+    for (let column of this.state.columnList) {
+      if (column.id === destinationTableId) {
+        card.tablename = column.title;
+        column.cardList.push(card);
+        this.setState({ displayRefresh: !this.state.displayRefresh });
+        await axios.put(API_URL + '/cards/' + card.id, card);
         return;
       }
     }
   }
 
-  updateCards(result) {
-    const card = this.findCardById(result.draggableId);
-    if (card && result && result.destination && result.destination.droppableId) {
-      this.removeCardById(result.draggableId);
-      this.addCardToTable(card, result.destination.droppableId, result.destination.index);
-    }
-  }
-
-  removeCardById(cardId) {
-    for (let column of this.state.columnList) {
-      column.cardList = column.cardList.filter((el) => {
-        return '' + el.id !== '' + cardId
-      });
-    }
+  removeCardFromCardList(cardId) {
+    this.state.columnList.forEach((el) => {
+      el.cardList.forEach((cards, index) => {
+        if (cards.id === cardId) {
+          el.cardList.splice(index, 1);
+          return;
+        }
+      })
+    })
   }
 
   findCardById(cardId) {
@@ -115,7 +149,8 @@ class App extends React.Component {
         }
       }
     }
-    return null;
+
+    return;
   }
 }
 

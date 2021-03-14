@@ -1,16 +1,13 @@
 import React from 'react';
-
-
-import './CreateCard.css';
-
 import { v4 as uuidv4 } from 'uuid';
+import './CreateCard.css';
 
 class CreateCard extends React.Component {
     constructor(props){
         super();
         this.state = {};
         this.state.addCard=props.addCard;
-        this.state.tableId= props.tableId;
+        this.state.table= props.table;
         this.state.inputValue = '';
         this.closeNewCard = props.onClose;
     }
@@ -30,7 +27,7 @@ class CreateCard extends React.Component {
     createCard () {
         this.state.addCard({id: uuidv4(), order: 1, 
                             title: this.state.inputValue, 
-                            body:""}, this.state.tableId, 2);
+                            body:""}, this.state.table, 2);
 
         this.setState({inputValue: ''});
     }
