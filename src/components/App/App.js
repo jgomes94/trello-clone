@@ -114,8 +114,9 @@ class App extends React.Component {
   }
 
   deleteCard = async (cardId) => {
-    console.log('cardId', cardId);
-    //await axios.delete(API_URL + '/cards/' + cardId);
+    this.removeCardFromCardList(cardId);
+    this.setState({ displayRefresh: !this.state.displayRefresh });
+    await axios.delete(API_URL + '/cards/' + cardId);
   }
 
   putCard = async (card, destinationTableId) => {

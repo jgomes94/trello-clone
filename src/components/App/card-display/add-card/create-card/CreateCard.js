@@ -25,9 +25,8 @@ class CreateCard extends React.Component {
     }
 
     createCard () {
-        this.state.addCard({id: uuidv4(), order: 1, 
-                            title: this.state.inputValue, 
-                            body:""}, this.state.table, 2);
+        this.state.addCard({id: uuidv4(), 
+                            title: this.state.inputValue}, this.state.table, 2);
 
         this.setState({inputValue: ''});
     }

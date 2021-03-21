@@ -25,7 +25,7 @@ class CardDisplay extends React.Component {
                 </div>
                 {cardList.map((el, index) => {
                     return (
-                        <Draggable key={el.id} draggableId={'' + el.id} index={index}>
+                        <Draggable key={el.id} draggableId={'' + el.id} index={index} >
                             {(provided) => (
                                 <div ref={provided.innerRef}
                                     {...provided.draggableProps}
@@ -33,8 +33,8 @@ class CardDisplay extends React.Component {
                                     className="card-body">
                                     <div className="card-thumbnail">
                                         <span>{el.title} </span>
-                                        <div onClick={this.deleteCard(el.id, 'delete')}>
-                                            <img style={{ "cursor": "default" }} src={deletesvg} />
+                                        <div >
+                                            <img style={{ "cursor": "default" }} src={deletesvg} onClick={(event) => this.deleteCard(event, el.id)}/>
                                         </div>
                                     </div>
                                 </div>
@@ -48,9 +48,8 @@ class CardDisplay extends React.Component {
         );
     }
 
-    deleteCard(cardId, param2) {
-        console.log('param2', param2);  
-        console.log('param2', cardId);  
+    deleteCard(event, cardId) {
+        this.state.deleteCard(cardId);
     }
 }
 
