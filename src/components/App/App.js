@@ -68,7 +68,20 @@ class App extends React.Component {
 
   getCards = async () => {
     const cardList = (await axios.get(API_URL + '/cards')).data;
-    let toReturn = []
+    let toReturn = [{
+      id: uuidv4(),
+      title: 'TODO',
+      cardList:[],
+    },{
+      id: uuidv4(),
+      title: 'DOING',
+      cardList:[],
+    },
+    {
+      id: uuidv4(),
+      title: 'DONE',
+      cardList:[],
+    }]
 
     cardList.forEach((el) => {
       let tableObj = toReturn.filter((filter) => filter.title == el.tablename);
