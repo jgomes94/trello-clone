@@ -16,7 +16,7 @@ import CardDisplay from './card-display/CardDisplay';
   ORGANIZE THE SERVICE METHODS IN A SINGLE FILE to be easy to make an exercise
 */
 
-const API_URL = 'http://localhost:3000';
+const API_URL = process.env.API_URL ? process.env.API_URL : 'https://g6o06ee4e6.execute-api.eu-west-1.amazonaws.com'; //necessary to change for where is the backend
 
 class App extends React.Component {
   constructor(props) {
