@@ -18,7 +18,7 @@ import CardDisplay from './card-display/CardDisplay';
 
 
 
-const API_URL = process.env.API_URL ? process.env.API_URL : 'https://g2giwrpt29.execute-api.eu-west-1.amazonaws.com'; //necessary to change for where is the backend
+const API_URL = process.env.API_URL ? process.env.API_URL : 'https://zlv34pabml.execute-api.eu-west-1.amazonaws.com'; //necessary to change for where is the backend
 
 class App extends React.Component {
   constructor(props) {
